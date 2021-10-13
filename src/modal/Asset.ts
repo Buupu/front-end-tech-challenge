@@ -2,8 +2,8 @@ export interface AssetModal {
   data: {
     nasa_id: string;
     title: string;
-    links: Link[];
   }[];
+  links: Link[];
 }
 
 export interface SearchCollectionModal {
