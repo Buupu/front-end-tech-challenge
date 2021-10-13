@@ -40,7 +40,7 @@ export default function SearchPage() {
         />
         <Button onClick={onSearch}>Search</Button>
       </Box>
-      <SimpleGrid columns={5} gap={4}>
+      <SimpleGrid columns={[2, 3, 4, 5]} gap={4}>
         {searchResults.collection.items.map((asset) => {
           return (
             <Box key={asset.data[0].nasa_id}>
