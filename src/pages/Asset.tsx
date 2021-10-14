@@ -8,7 +8,7 @@ import { BsSoundwave } from "react-icons/bs";
 export default function AssetPage() {
   const { assetId } = useParams<{ assetId: string }>();
   const [assetInfo, setAssetInfo] = useState<AssetModal>();
-  const [isLoadingResults, setIsLoadingResults] = useState<boolean>();
+  const [isLoadingResults, setIsLoadingResults] = useState<boolean>(true);
 
   useEffect(() => {
     const callApi = async () => {
