@@ -4,6 +4,10 @@ const instance = axios.create({
   baseURL: "https://images-api.nasa.gov/",
 });
 
-export const getSearchResults = (query: string) => {
-  return instance.get(`/search?&media_type=image&q=${query}`);
+export const getSearchResults = (query: string, mediaType: string) => {
+  return instance.get(`/search?&media_type=${mediaType}&q=${query}`);
+};
+
+export const getAsset = (assetId: string) => {
+  return instance.get(`/asset/${assetId}`);
 };
