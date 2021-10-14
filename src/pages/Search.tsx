@@ -13,7 +13,7 @@ import { AssetSearchCard } from "../components/AssetSearchCard";
 const defaultCollection: SearchCollectionModal = {
   collection: {
     items: [],
-    links: { href: "", rel: "" },
+    links: [],
     metadata: { total_hits: 0 },
   },
 };
@@ -24,6 +24,7 @@ export default function SearchPage() {
   const [searchResults, setSearchResults] =
     useState<SearchCollectionModal>(defaultCollection);
   const [isLoadingResults, setIsLoadingResults] = useState<boolean>(false);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
   const onSearch = async () => {
     setIsLoadingResults(true);
@@ -39,6 +40,30 @@ export default function SearchPage() {
       //handle some error
     }
     setIsLoadingResults(false);
+  };
+
+  const onLoadMore = async (nextUrl: string) => {
+    setIsLoadingMore(true);
+    const results = await fetch(nextUrl);
+
+    if (results.status === 200) {
+      const resultsJson = await results.json();
+      //would probably want to type check here
+      const data: SearchCollectionModal = resultsJson as SearchCollectionModal;
+
+      setSearchResults({
+        collection: {
+          ...searchResults.collection,
+          items: [...searchResults.collection.items, ...data.collection.items],
+          links: data.collection.links,
+        },
+      });
+    } else {
+      //handle some error
+    }
+    setIsLoadingResults(false);
+
+    setIsLoadingMore(false);
   };
 
   return (
@@ -85,13 +110,33 @@ export default function SearchPage() {
           <Spinner />
         </Flex>
       ) : (
-        <SimpleGrid columns={[2, 3, 4, 5]} gap={4} py={20}>
-          {searchResults.collection?.items?.map((asset) => {
-            return (
-              <AssetSearchCard key={asset.data[0].nasa_id} asset={asset} />
-            );
+        <>
+          <SimpleGrid columns={[2, 3, 4, 5]} gap={4} pt={20} pb={10}>
+            {searchResults.collection?.items?.map((asset) => {
+              return (
+                <AssetSearchCard key={asset.data[0].nasa_id} asset={asset} />
+              );
+            })}
+          </SimpleGrid>
+          {searchResults.collection?.links.map((link) => {
+            if (link.rel === "next") {
+              return (
+                <Flex justify="center" key="load-more-button">
+                  <Button
+                    mb={10}
+                    colorScheme="teal"
+                    onClick={() => onLoadMore(link.href)}
+                    isLoading={isLoadingMore}
+                  >
+                    Load More
+                  </Button>
+                </Flex>
+              );
+            } else {
+              return null;
+            }
           })}
-        </SimpleGrid>
+        </>
       )}
     </Box>
   );

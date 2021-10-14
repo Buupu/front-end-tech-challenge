@@ -21,7 +21,7 @@ export interface AssetResponseModal {
 export interface SearchCollectionModal {
   collection: {
     items: AssetSearchResultModal[];
-    links: Link;
+    links: Link[];
     metadata: { total_hits: number };
   };
 }
