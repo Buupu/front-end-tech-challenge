@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Heading, Img, Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Img, Spinner, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { getAsset } from "../api/Asset";
 import { AssetModal, AssetResponseModal } from "../modal/Asset";
@@ -16,11 +16,14 @@ export default function AssetPage() {
 
       if (results.status === 200) {
         const data: AssetResponseModal = results.data as AssetResponseModal;
+
+        //assuming last index in array is always metadata link
         const metaDataResults = await fetch(
           data?.collection?.items[data?.collection?.items?.length - 1].href,
         );
         const metaDataJson = await metaDataResults.json();
-        console.log(metaDataJson);
+
+        //media url should be handled better and depend on media type
         setAssetInfo({
           title: metaDataJson["XMP:Title"],
           description: metaDataJson["XMP:Description"],
@@ -36,18 +39,20 @@ export default function AssetPage() {
     callApi();
   }, [assetId]);
   return (
-    <Box>
-      <Heading>Asset Page</Heading>
+    <Box maxW="container.xl" margin="auto" p={20}>
       {isLoadingResults ? (
-        <Spinner />
+        <Flex p={20} justify="center">
+          <Spinner />
+        </Flex>
       ) : (
-        <Box>
+        <Box textAlign="center">
+          <Heading as="h1">
+            {assetInfo?.title || "Couldn't find the title.."}
+          </Heading>
+          <Text pb={4}>{assetInfo?.description}</Text>
           {assetInfo?.mediaType === "image" && (
-            <Img src={assetInfo?.mediaUrl} />
+            <Img src={assetInfo?.mediaUrl} maxH="500px" margin="auto" />
           )}
-
-          <Heading>{assetInfo?.title}</Heading>
-          <Text>{assetInfo?.description}</Text>
         </Box>
       )}
     </Box>
