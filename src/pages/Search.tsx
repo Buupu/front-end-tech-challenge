@@ -68,43 +68,46 @@ export default function SearchPage() {
 
   return (
     <Box maxW="container.xl" margin="auto" px={4}>
-      <Flex direction="column" alignItems="center" pt={20}>
-        <InputGroup maxW="600px" mb={6} size="lg">
-          <Input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search.."
-            borderRadius="full"
-          />
-          <InputRightElement
-            children={
-              <Button
-                onClick={onSearch}
-                isLoading={isLoadingResults}
-                maxW="40px"
-                maxH="40px"
-                w="100%"
-                h="100%"
-                borderRadius="full"
-                colorScheme="teal"
-              >
-                <Icon as={AiOutlineSearch} color="white" fontSize={24} />
-              </Button>
-            }
-          />
-        </InputGroup>
+      <form>
+        <Flex direction="column" alignItems="center" pt={20}>
+          <InputGroup maxW="600px" mb={6} size="lg">
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search.."
+              borderRadius="full"
+            />
+            <InputRightElement
+              children={
+                <Button
+                  onClick={onSearch}
+                  isLoading={isLoadingResults}
+                  maxW="40px"
+                  maxH="40px"
+                  w="100%"
+                  h="100%"
+                  borderRadius="full"
+                  colorScheme="teal"
+                  type="submit"
+                >
+                  <Icon as={AiOutlineSearch} color="white" fontSize={24} />
+                </Button>
+              }
+            />
+          </InputGroup>
 
-        <RadioGroup onChange={(e) => setMediaType(e)} value={mediaType}>
-          <Stack direction="row" spacing={10}>
-            <Radio value="image" size="lg">
-              Image
-            </Radio>
-            <Radio value="audio" size="lg">
-              Audio
-            </Radio>
-          </Stack>
-        </RadioGroup>
-      </Flex>
+          <RadioGroup onChange={(e) => setMediaType(e)} value={mediaType}>
+            <Stack direction="row" spacing={10}>
+              <Radio value="image" size="lg">
+                Image
+              </Radio>
+              <Radio value="audio" size="lg">
+                Audio
+              </Radio>
+            </Stack>
+          </RadioGroup>
+        </Flex>
+      </form>
       {isLoadingResults ? (
         <Flex justify="center" p={20}>
           <Spinner />

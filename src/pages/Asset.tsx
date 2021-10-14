@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Heading, Img, Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Img, Spinner, Text } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { getAsset } from "../api/Asset";
 import { AssetModal, AssetResponseModal } from "../modal/Asset";
+import { BsSoundwave } from "react-icons/bs";
 
 export default function AssetPage() {
   const { assetId } = useParams<{ assetId: string }>();
@@ -38,6 +39,7 @@ export default function AssetPage() {
 
     callApi();
   }, [assetId]);
+  console.log(assetInfo?.mediaType);
   return (
     <Box maxW="container.xl" margin="auto" p={20}>
       {isLoadingResults ? (
@@ -46,12 +48,29 @@ export default function AssetPage() {
         </Flex>
       ) : (
         <Box textAlign="center">
+          {/* Some assets seem to have the title/description under different property */}
           <Heading as="h1">
-            {assetInfo?.title || "Couldn't find the title.."}
+            {assetInfo?.title || "This asset has no title under XMP:Title"}
           </Heading>
-          <Text pb={4}>{assetInfo?.description}</Text>
+          <Text pb={4}>
+            {assetInfo?.description ||
+              "This asset has no title under XMP:Description"}
+          </Text>
           {assetInfo?.mediaType === "image" && (
             <Img src={assetInfo?.mediaUrl} maxH="500px" margin="auto" />
+          )}
+          {assetInfo?.mediaType === "audio" && (
+            <Flex
+              margin="auto"
+              alignItems="center"
+              justify="center"
+              h="200px"
+              w="200px"
+              border="1px"
+              borderColor="gray.200"
+            >
+              <Icon as={BsSoundwave} fontSize={40} color="teal" />
+            </Flex>
           )}
         </Box>
       )}
