@@ -32,7 +32,12 @@ export const AssetSearchCard = ({
             <Icon as={BsSoundwave} fontSize={30} color="teal.500" />
           </Flex>
         )}
-        <Text fontSize={14} p={2} textAlign="center">
+        <Text
+          fontSize={14}
+          p={2}
+          textAlign="center"
+          data-testid="asset-search-card-title"
+        >
           {assetData?.title}
         </Text>
       </Box>

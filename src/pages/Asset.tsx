@@ -39,9 +39,9 @@ export default function AssetPage() {
 
     callApi();
   }, [assetId]);
-  console.log(assetInfo?.mediaType);
+
   return (
-    <Box maxW="container.xl" margin="auto" p={20}>
+    <Box maxW="container.xl" margin="auto" py={20} px={4}>
       {isLoadingResults ? (
         <Flex p={20} justify="center">
           <Spinner />
